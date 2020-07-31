@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:boxdash/components/bg.dart';
 import 'package:boxdash/components/box.dart';
 import 'package:boxdash/components/level.dart';
+import 'package:boxdash/components/lives.dart';
 import 'package:boxdash/components/obstacle.dart';
 import 'package:boxdash/components/score.dart';
 import 'package:flame/components/particle_component.dart';
@@ -16,8 +17,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class BoxGame extends BaseGame with HorizontalDragDetector {
+  int lives;
   Score score;
   Level level;
+  Lives livesDisplay;
   int counter = 0;
   var speed = 200.0;
   double multiplier = 1.0;
@@ -26,15 +29,18 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   Box box;
   List<Obstacle> obs;
   BoxGame(Size size) {
+    lives = 3;
     add(Bg());
     add(box = Box());
     obs = List<Obstacle>();
     score = Score(this);
     level = Level(this);
+    livesDisplay = Lives(this);
   }
 
   @override
   void update(double t) {
+    if (box != null) box.update(t);
     if (size != null && counter % ((40 / obsMultiplier) + 10).round() == 0) {
       var r = Random.secure();
       var position = r.nextInt(3);
@@ -60,6 +66,17 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
         element.update(t);
       });
     }
+    obs.forEach((element) {
+      if (box.x >= element.x - size.width / 9 &&
+          box.x <= element.x + size.width * 1 / 3) {
+        if (box.y <= element.y + size.width / 18 &&
+            box.y + size.width / 9 >= element.y) {
+          element.crash();
+          if (lives != null) lives--;
+        }
+      }
+    });
+
     counter++;
     if (counter % 1000 == 0) {
       obsMultiplier++;
@@ -69,6 +86,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     }
     if (score != null) score.update(t);
     if (level != null) level.update(t);
+    if (livesDisplay != null) livesDisplay.update(t);
   }
 
   @override
@@ -76,6 +94,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     super.render(c);
     score.render(c);
     level.render(c);
+    livesDisplay.render(c);
   }
 
   @override

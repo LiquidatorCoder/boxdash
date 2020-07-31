@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/effects/effects.dart';
 
 class Obstacle extends PositionComponent with Resizable {
   double speedY = 0.0;
@@ -14,8 +13,18 @@ class Obstacle extends PositionComponent with Resizable {
   }
 
   void reset() {
-    // this.addEffect()
     this.y = 0;
+  }
+
+  void crash() {
+    this.speedY = -this.speedY;
+    Future.delayed(Duration(milliseconds: 100))
+        .then((value) => {this.x = 100000});
+    this.destroy();
+  }
+
+  bool destroy() {
+    return true;
   }
 
   void render(Canvas c) {
