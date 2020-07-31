@@ -6,6 +6,7 @@ import 'package:boxdash/components/level.dart';
 import 'package:boxdash/components/lives.dart';
 import 'package:boxdash/components/obstacle.dart';
 import 'package:boxdash/components/score.dart';
+import 'package:boxdash/main.dart';
 import 'package:flame/components/particle_component.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
@@ -21,6 +22,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   Score score;
   Level level;
   Lives livesDisplay;
+  BuildContext context;
   int counter = 0;
   var speed = 200.0;
   double multiplier = 1.0;
@@ -28,7 +30,8 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   double speedMultiplier = 1;
   Box box;
   List<Obstacle> obs;
-  BoxGame(Size size) {
+  BoxGame(Size size, context) {
+    this.context = context;
     lives = 3;
     add(Bg());
     add(box = Box());
@@ -67,6 +70,21 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
       });
     }
     obs.forEach((element) {
+      if (lives != null) if (lives == 0) {
+        this.pauseEngine();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Scaffold(
+                body: Container(
+                  child: Home(score: (counter * obsMultiplier / 10).round()),
+                ),
+              );
+            },
+          ),
+        );
+      }
       if (box.x >= element.x - size.width / 9 &&
           box.x <= element.x + size.width * 1 / 3) {
         if (box.y <= element.y + size.width / 18 &&
