@@ -2,13 +2,13 @@ import 'dart:ui';
 import 'package:boxdash/game.dart';
 import 'package:flutter/painting.dart';
 
-class Score {
+class Level {
   final BoxGame game;
   TextPainter painter;
   TextStyle textStyle;
   Offset position;
 
-  Score(this.game) {
+  Level(this.game) {
     painter = TextPainter(
       textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
@@ -16,7 +16,7 @@ class Score {
 
     textStyle = TextStyle(
       color: Color(0xfff6ab6c),
-      fontSize: 50,
+      fontSize: 25,
     );
 
     position = Offset.zero;
@@ -29,9 +29,9 @@ class Score {
 
   void update(double t) {
     if ((painter.text?.text ?? '') !=
-        (game.counter * game.obsMultiplier / 10).round().toString()) {
+        "Level " + game.obsMultiplier.round().toString()) {
       painter.text = TextSpan(
-        text: (game.counter * game.obsMultiplier / 10).round().toString(),
+        text: "Level " + game.obsMultiplier.round().toString(),
         style: textStyle,
       );
 
@@ -40,7 +40,7 @@ class Score {
       if (game.size != null) {
         position = Offset(
           (game.size.width / 2) - (painter.width / 2),
-          (game.size.height * .15) - (painter.height / 2),
+          (game.size.height * .20) - (painter.height / 2),
         );
       } else {
         painter.text = TextSpan(text: "");

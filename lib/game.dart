@@ -2,14 +2,22 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:boxdash/components/bg.dart';
 import 'package:boxdash/components/box.dart';
+import 'package:boxdash/components/level.dart';
 import 'package:boxdash/components/obstacle.dart';
 import 'package:boxdash/components/score.dart';
+import 'package:flame/components/particle_component.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
+import 'package:flame/particle.dart';
+import 'package:flame/particles/accelerated_particle.dart';
+import 'package:flame/particles/circle_particle.dart';
+import 'package:flame/particles/moving_particle.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 
 class BoxGame extends BaseGame with HorizontalDragDetector {
   Score score;
+  Level level;
   int counter = 0;
   var speed = 200.0;
   double multiplier = 1.0;
@@ -22,6 +30,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     add(box = Box());
     obs = List<Obstacle>();
     score = Score(this);
+    level = Level(this);
   }
 
   @override
@@ -59,12 +68,14 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
       speedMultiplier = speedMultiplier + 2;
     }
     if (score != null) score.update(t);
+    if (level != null) level.update(t);
   }
 
   @override
   void render(Canvas c) {
     super.render(c);
     score.render(c);
+    level.render(c);
   }
 
   @override
