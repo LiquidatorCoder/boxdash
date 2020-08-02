@@ -12,6 +12,9 @@ void main() async {
   await flameUtil.fullScreen();
   await flameUtil.setOrientation(DeviceOrientation.portraitUp);
   size = await Flame.util.initialDimensions();
+  Flame.bgm.initialize();
+  Flame.bgm.stop();
+  Flame.audio.loadAll(['levelup.wav', 'crash.wav', 'bgm.mp3']);
   runApp(MaterialApp(
       home: Scaffold(
     body: Container(
@@ -35,6 +38,7 @@ class Home extends StatelessWidget {
             RaisedButton(
               child: Text("Play"),
               onPressed: () {
+                Flame.bgm.play('bgm.mp3');
                 Navigator.push(
                   context,
                   MaterialPageRoute(

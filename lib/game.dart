@@ -8,6 +8,7 @@ import 'package:boxdash/components/obstacle.dart';
 import 'package:boxdash/components/score.dart';
 import 'package:boxdash/main.dart';
 import 'package:flame/components/particle_component.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flame/particle.dart';
@@ -16,6 +17,7 @@ import 'package:flame/particles/circle_particle.dart';
 import 'package:flame/particles/moving_particle.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BoxGame extends BaseGame with HorizontalDragDetector {
   int lives;
@@ -71,6 +73,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     }
     obs.forEach((element) {
       if (lives != null) if (lives == 0) {
+        Flame.bgm.stop();
         this.pauseEngine();
         Navigator.push(
           context,
@@ -90,6 +93,8 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
         if (box.y <= element.y + size.width / 18 &&
             box.y + size.width / 9 >= element.y) {
           element.crash();
+          HapticFeedback.vibrate();
+          Flame.audio.play('crash.wav', volume: 0.5);
           if (lives != null) lives--;
         }
       }
@@ -98,6 +103,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     counter++;
     if (counter % 1000 == 0) {
       obsMultiplier++;
+      Flame.audio.play('levelup.wav', volume: 0.5);
     }
     if (counter % 10 == 0) {
       speedMultiplier = speedMultiplier + 2;
