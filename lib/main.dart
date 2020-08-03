@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:boxdash/game.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
@@ -23,21 +24,56 @@ void main() async {
   )));
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   final int score;
+
   Home({@required this.score});
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int level = 1;
+  TextEditingController levelNum = TextEditingController();
+  @override
+  void initState() {
+    levelNum.text = level.toString();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    game = BoxGame(size, context);
     return Container(
       color: Color(0xfff6efa6),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text("Level  "),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.04,
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    controller: levelNum,
+                    onChanged: (text) {
+                      if (text != "") {
+                        setState(() {
+                          level = int.parse(text);
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
             RaisedButton(
               child: Text("Play"),
               onPressed: () {
+                game = BoxGame(size, level, context);
                 Flame.bgm.play('bgm.mp3');
                 Navigator.push(
                   context,
@@ -49,7 +85,9 @@ class Home extends StatelessWidget {
                 );
               },
             ),
-            score != 0 ? Text("Score = " + score.toString()) : Container(),
+            widget.score != 0
+                ? Text("Score = " + widget.score.toString())
+                : Container(),
           ],
         ),
       ),
@@ -62,6 +100,15 @@ class GameWrapper extends StatelessWidget {
   GameWrapper(this.game);
   @override
   Widget build(BuildContext context) {
-    return game.widget;
+    return ShaderMask(
+        shaderCallback: (Rect rect) {
+          return LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.center,
+            colors: [Colors.pink, Colors.yellow],
+          ).createShader(rect);
+        },
+        blendMode: BlendMode.saturation,
+        child: game.widget);
   }
 }
