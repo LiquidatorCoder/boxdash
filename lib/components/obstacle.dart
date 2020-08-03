@@ -4,6 +4,7 @@ import 'package:flame/components/mixins/resizable.dart';
 
 class Obstacle extends PositionComponent with Resizable {
   double speedY = 0.0;
+  double speedX = 0.0;
   Rect obstacleRect;
   Paint obstaclePaint = Paint()..color = Color(0xff8fcfd1);
 
@@ -19,8 +20,9 @@ class Obstacle extends PositionComponent with Resizable {
   void crash() {
     this.destroy();
     this.speedY = -this.speedY;
+    this.speedX = 0;
     Future.delayed(Duration(milliseconds: 50))
-        .then((value) => {this.x = 100000});
+        .then((value) => {this.y = -100000});
   }
 
   bool destroy() {
@@ -41,5 +43,11 @@ class Obstacle extends PositionComponent with Resizable {
   void update(double t) {
     super.update(t);
     this.y += speedY * t;
+    this.x += speedX * t;
+    if (this.x > size.width) {
+      this.x = -size.width * 1 / 3;
+    } else if (this.x + size.width * 1 / 3 < 0) {
+      this.x = size.width;
+    }
   }
 }

@@ -56,23 +56,26 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
       var position = r.nextInt(3);
       var delta = r.nextDouble() * 50;
       var val = [-1, 1];
+      var mover = r.nextInt(3);
       var choice = r.nextInt(2);
       delta = delta * val[choice];
       switch (position) {
         case 0:
           // first obstacle
-          obs.add(Obstacle(0 + delta, speed + speedMultiplier));
+          obs.add(Obstacle(0 + delta, speed + speedMultiplier)
+            ..speedX = obsMultiplier >= 4 ? mover == 0 ? delta * 5 : 0 : 0);
           add(obs.last);
           break;
         case 1:
           // second obstacle
-          obs.add(Obstacle(size.width / 3 + delta, speed + speedMultiplier));
+          obs.add(Obstacle(size.width / 3 + delta, speed + speedMultiplier)
+            ..speedX = obsMultiplier >= 4 ? mover == 1 ? delta * 5 : 0 : 0);
           add(obs.last);
           break;
         case 2:
           // third obstacle
-          obs.add(
-              Obstacle(size.width * 2 / 3 + delta, speed + speedMultiplier));
+          obs.add(Obstacle(size.width * 2 / 3 + delta, speed + speedMultiplier)
+            ..speedX = obsMultiplier >= 4 ? mover == 2 ? delta * 5 : 0 : 0);
           add(obs.last);
           break;
       }
@@ -117,9 +120,9 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
 // score counter
     counter++;
     if (counter % 1000 == 0) {
+      // level up
       obsMultiplier++;
       print("Level $obsMultiplier, speed $speedMultiplier, counter $counter");
-      // level up
       Flame.audio.play('levelup.wav', volume: 0.25);
     }
     if (counter % 10 == 0) {
