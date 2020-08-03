@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
@@ -8,8 +9,13 @@ class Obstacle extends SpriteComponent with Resizable {
   double speedY = 0.0;
   double speedX = 0.0;
 
-  Obstacle(double x, double speed) {
-    this.sprite = Sprite('obstacle.png', width: 1080, height: 1080);
+  Obstacle(double x, double speed, bool advance) {
+    Random r = Random();
+    var name = advance
+        ? 'obstacle' + (r.nextInt(4) + 4).toString() + '.png'
+        : 'obstacle' + r.nextInt(4).toString() + '.png';
+    print(name);
+    this.sprite = Sprite(name, width: 1080, height: 1080);
     this.x = x;
     this.speedY = speed;
   }

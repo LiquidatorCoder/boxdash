@@ -38,6 +38,9 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     color: const Color(0xFF000000),
   );
   BoxGame(Size size, levelNum, context) {
+    if (levelNum > 26) {
+      levelNum = 26;
+    }
     if (levelNum == 1) {
       speedMultiplier = 1;
       obsMultiplier = 1;
@@ -87,19 +90,22 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
       switch (position) {
         case 0:
           // first obstacle
-          obs.add(Obstacle(0 + delta, speed + speedMultiplier)
+          obs.add(Obstacle(0 + delta, speed + speedMultiplier,
+              obsMultiplier >= 4 ? true : false)
             ..speedX = obsMultiplier >= 4 ? mover == 0 ? delta * 5 : 0 : 0);
           add(obs.last);
           break;
         case 1:
           // second obstacle
-          obs.add(Obstacle(size.width / 3 + delta, speed + speedMultiplier)
+          obs.add(Obstacle(size.width / 3 + delta, speed + speedMultiplier,
+              obsMultiplier >= 4 ? true : false)
             ..speedX = obsMultiplier >= 4 ? mover == 1 ? delta * 5 : 0 : 0);
           add(obs.last);
           break;
         case 2:
           // third obstacle
-          obs.add(Obstacle(size.width * 2 / 3 + delta, speed + speedMultiplier)
+          obs.add(Obstacle(size.width * 2 / 3 + delta, speed + speedMultiplier,
+              obsMultiplier >= 4 ? true : false)
             ..speedX = obsMultiplier >= 4 ? mover == 2 ? delta * 5 : 0 : 0);
           add(obs.last);
           break;

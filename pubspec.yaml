@@ -44,7 +44,14 @@ flutter:
     - assets/audio/crash.wav
     - assets/audio/levelup.wav
     - assets/images/cube.png
-    - assets/images/obstacle.png
+    - assets/images/obstacle0.png
+    - assets/images/obstacle1.png
+    - assets/images/obstacle2.png
+    - assets/images/obstacle3.png
+    - assets/images/obstacle4.png
+    - assets/images/obstacle5.png
+    - assets/images/obstacle6.png
+    - assets/images/obstacle7.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
