@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:boxdash/game.dart';
 import 'package:flutter/painting.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Score {
   final BoxGame game;
@@ -14,9 +15,9 @@ class Score {
       textDirection: TextDirection.ltr,
     );
 
-    textStyle = TextStyle(
+    textStyle = GoogleFonts.pressStart2p(
       color: Color(0xfff6ab6c),
-      fontSize: 50,
+      fontSize: 30,
     );
 
     position = Offset.zero;

@@ -49,7 +49,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     ];
 
     parallaxComponent = ParallaxComponent(images,
-        baseSpeed: const Offset(0, -10), layerDelta: const Offset(0, -1));
+        baseSpeed: const Offset(0, -10), layerDelta: const Offset(0, -2));
 
     if (levelNum > 26) {
       levelNum = 26;

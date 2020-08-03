@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:boxdash/game.dart';
 import 'package:flutter/painting.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Level {
   final BoxGame game;
@@ -14,9 +15,9 @@ class Level {
       textDirection: TextDirection.ltr,
     );
 
-    textStyle = TextStyle(
+    textStyle = GoogleFonts.pressStart2p(
       color: Color(0xfff6ab6c),
-      fontSize: 25,
+      fontSize: 15,
     );
 
     position = Offset.zero;
@@ -40,7 +41,7 @@ class Level {
       if (game.size != null) {
         position = Offset(
           (game.size.width / 2) - (painter.width / 2),
-          (game.size.height * .20) - (painter.height / 2),
+          (game.size.height * .19) - (painter.height / 2),
         );
       } else {
         painter.text = TextSpan(text: "");
