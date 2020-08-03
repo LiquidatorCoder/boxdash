@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:boxdash/game.dart';
 import 'package:flame/flame.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/util.dart';
 import 'package:flutter/services.dart';
@@ -13,15 +14,17 @@ void main() async {
   await flameUtil.fullScreen();
   await flameUtil.setOrientation(DeviceOrientation.portraitUp);
   size = await Flame.util.initialDimensions();
+  Flame.audio.disableLog();
   Flame.bgm.initialize();
   Flame.bgm.stop();
   Flame.audio.loadAll(['levelup.wav', 'crash.wav', 'bgm.mp3']);
   runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-    body: Container(
-      child: Home(score: 0),
-    ),
-  )));
+        body: Container(
+          child: Home(score: 0),
+        ),
+      )));
 }
 
 class Home extends StatefulWidget {
@@ -74,6 +77,9 @@ class _HomeState extends State<Home> {
               child: Text("Play"),
               onPressed: () {
                 game = BoxGame(size, level, context);
+                TapGestureRecognizer tapper = TapGestureRecognizer();
+                tapper.onTapDown = game.onTapDown;
+                Flame.util.addGestureRecognizer(tapper);
                 Flame.bgm.play('bgm.mp3');
                 Navigator.push(
                   context,
