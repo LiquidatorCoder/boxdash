@@ -10,7 +10,7 @@ class Lives {
 
   Lives(this.game) {
     painter = TextPainter(
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.left,
       textDirection: TextDirection.ltr,
     );
 
@@ -28,9 +28,9 @@ class Lives {
   }
 
   void update(double t) {
-    if ((painter.text?.text ?? '') != game.lives.toString()) {
+    if ((painter.text?.text ?? '') != '❤' * game.lives) {
       painter.text = TextSpan(
-        text: game.lives.toString(),
+        text: '❤' * game.lives,
         style: textStyle,
       );
 
@@ -38,7 +38,7 @@ class Lives {
 
       if (game.size != null) {
         position = Offset(
-          (30) - (painter.width / 2),
+          10,
           (30) - (painter.height / 2),
         );
       } else {
