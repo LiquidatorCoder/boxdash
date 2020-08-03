@@ -8,6 +8,7 @@ import 'package:boxdash/components/lives.dart';
 import 'package:boxdash/components/obstacle.dart';
 import 'package:boxdash/components/score.dart';
 import 'package:boxdash/main.dart';
+import 'package:flame/components/parallax_component.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
@@ -21,6 +22,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   final r = Random.secure();
   final Random rnd = Random();
   final particles = acceleratedParticles();
+  var parallaxComponent;
   double fpsRate;
   int lives;
   Score score;
@@ -37,7 +39,18 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   final TextConfig fpsTextConfig = TextConfig(
     color: const Color(0xFF000000),
   );
+
   BoxGame(Size size, levelNum, context) {
+    final images = [
+      ParallaxImage("bg.png",
+          fill: LayerFill.height, alignment: Alignment.center),
+      ParallaxImage("fg.png",
+          fill: LayerFill.height, alignment: Alignment.center),
+    ];
+
+    parallaxComponent = ParallaxComponent(images,
+        baseSpeed: const Offset(0, -10), layerDelta: const Offset(0, -1));
+
     if (levelNum > 26) {
       levelNum = 26;
     }
@@ -53,6 +66,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     this.context = context;
     lives = 3;
     add(Bg());
+    add(parallaxComponent);
     add(box = Box());
     obs = List<Obstacle>();
     // Timer.periodic(
@@ -77,6 +91,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
 
   @override
   void update(double t) {
+    parallaxComponent.update(t);
     fpsRate = (1 / t);
     // spawning obstacles
     if (box != null) box.update(t);

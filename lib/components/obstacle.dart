@@ -14,7 +14,6 @@ class Obstacle extends SpriteComponent with Resizable {
     var name = advance
         ? 'obstacle' + (r.nextInt(4) + 4).toString() + '.png'
         : 'obstacle' + r.nextInt(4).toString() + '.png';
-    print(name);
     this.sprite = Sprite(name, width: 1080, height: 1080);
     this.x = x;
     this.speedY = speed;
