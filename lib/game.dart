@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:boxdash/components/animatedParticles.dart';
 import 'package:boxdash/components/bg.dart';
 import 'package:boxdash/components/box.dart';
 import 'package:boxdash/components/level.dart';
@@ -10,11 +11,18 @@ import 'package:boxdash/main.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
+import 'package:flame/particles/translated_particle.dart';
+import 'package:flame/text_config.dart';
+import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class BoxGame extends BaseGame with HorizontalDragDetector {
+  final r = Random.secure();
+  final Random rnd = Random();
+  final particles = acceleratedParticles();
+  double fpsRate;
   int lives;
   Score score;
   Level level;
@@ -27,6 +35,9 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   int speedMultiplier = 1;
   Box box;
   List<Obstacle> obs;
+  final TextConfig fpsTextConfig = TextConfig(
+    color: const Color(0xFF000000),
+  );
   BoxGame(Size size, levelNum, context) {
     if (levelNum == 1) {
       speedMultiplier = 1;
@@ -42,17 +53,32 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     add(Bg());
     add(box = Box());
     obs = List<Obstacle>();
+    // Timer.periodic(
+    //   Duration(milliseconds: 100),
+    //   (_) => spawnParticles(),
+    // );
+
     score = Score(this);
     level = Level(this);
     livesDisplay = Lives(this);
   }
 
+  void spawnParticles() {
+    add(
+      TranslatedParticle(
+        lifespan: 0.1,
+        offset: Offset(size.width / 2, size.height - 200),
+        child: particles,
+      ).asComponent(),
+    );
+  }
+
   @override
   void update(double t) {
+    fpsRate = (1 / t);
     // spawning obstacles
     if (box != null) box.update(t);
     if (size != null && counter % ((40 / obsMultiplier) + 10).round() == 0) {
-      var r = Random.secure();
       var position = r.nextInt(3);
       var delta = r.nextDouble() * 50;
       var val = [-1, 1];
@@ -140,6 +166,8 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     score.render(c);
     level.render(c);
     livesDisplay.render(c);
+    // fpsTextConfig.render(
+    //     c, '${fpsRate.toStringAsFixed(2)}fps', Position(0, size.height - 24));
   }
 
   @override
