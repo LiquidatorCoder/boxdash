@@ -2,8 +2,7 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/effects/effects.dart';
-
-const GRAVITY = 800.0;
+import 'package:flutter/animation.dart';
 
 class Box extends PositionComponent with Resizable {
   double speedY = 0.0;
@@ -11,7 +10,6 @@ class Box extends PositionComponent with Resizable {
   Paint boxPaint = Paint()..color = Color(0xffdf5e88);
 
   void reset() {
-    // this.addEffect()
     this.x = size.width / 2 - size.width / 9 / 2;
     this.y = size.height - size.height / 9 / 2 - 200;
     this.speedY = 0.0;
@@ -27,17 +25,19 @@ class Box extends PositionComponent with Resizable {
     reset();
   }
 
+  void spin() {
+    print("spinning");
+    this.addEffect(
+      RotateEffect(
+        radians: double.maxFinite,
+        speed: 250,
+        isInfinite: true,
+        curve: Curves.easeIn,
+      ),
+    );
+  }
+
   void update(double t) {
     super.update(t);
-    // this.y += speedY * t - GRAVITY * t * t / 2;
-    // this.speedY += GRAVITY * t;
-    // if (size != null) {
-    //   if (y < -10) {
-    //     reset();
-    //   } else if (y > size.height - size.width / 9) {
-    //     this.speedY = 0.0;
-    //     this.y = size.height - size.width / 9;
-    //   }
-    // }
   }
 }

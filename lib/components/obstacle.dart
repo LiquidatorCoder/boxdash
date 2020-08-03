@@ -17,10 +17,10 @@ class Obstacle extends PositionComponent with Resizable {
   }
 
   void crash() {
-    this.speedY = -this.speedY;
-    Future.delayed(Duration(milliseconds: 100))
-        .then((value) => {this.x = 100000});
     this.destroy();
+    this.speedY = -this.speedY;
+    Future.delayed(Duration(milliseconds: 50))
+        .then((value) => {this.x = 100000});
   }
 
   bool destroy() {
