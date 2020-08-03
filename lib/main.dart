@@ -100,24 +100,6 @@ class GameWrapper extends StatelessWidget {
   GameWrapper(this.game);
   @override
   Widget build(BuildContext context) {
-    return ShaderMask(
-        shaderCallback: (Rect rect) {
-          return LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.yellow,
-              Colors.yellow,
-              Colors.yellow,
-              Colors.yellow,
-              Colors.yellow,
-              Colors.yellow,
-              Colors.yellow,
-              Colors.white
-            ],
-          ).createShader(rect);
-        },
-        blendMode: BlendMode.saturation,
-        child: game.widget);
+    return game.widget;
   }
 }

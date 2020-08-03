@@ -1,14 +1,15 @@
 import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
+import 'package:flame/position.dart';
+import 'package:flame/sprite.dart';
 
-class Obstacle extends PositionComponent with Resizable {
+class Obstacle extends SpriteComponent with Resizable {
   double speedY = 0.0;
   double speedX = 0.0;
-  Rect obstacleRect;
-  Paint obstaclePaint = Paint()..color = Color(0xff8fcfd1);
 
   Obstacle(double x, double speed) {
+    this.sprite = Sprite('obstacle.png', width: 1080, height: 1080);
     this.x = x;
     this.speedY = speed;
   }
@@ -30,9 +31,21 @@ class Obstacle extends PositionComponent with Resizable {
   }
 
   void render(Canvas c) {
-    obstacleRect =
-        Rect.fromLTWH(this.x, this.y, size.width * 1 / 3, size.width / 18);
-    c.drawRect(obstacleRect, obstaclePaint);
+    this.sprite.renderPosition(
+          c,
+          Position(this.x, this.y),
+          size: Position(size.width / 9, size.width / 9),
+        );
+    this.sprite.renderPosition(
+          c,
+          Position(this.x + size.width / 9, this.y),
+          size: Position(size.width / 9, size.width / 9),
+        );
+    this.sprite.renderPosition(
+          c,
+          Position(this.x + size.width * 2 / 9, this.y),
+          size: Position(size.width / 9, size.width / 9),
+        );
   }
 
   void resize(Size size) {

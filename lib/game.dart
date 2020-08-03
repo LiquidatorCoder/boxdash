@@ -13,7 +13,6 @@ import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flame/particles/translated_particle.dart';
 import 'package:flame/text_config.dart';
-import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -2,12 +2,15 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/effects/effects.dart';
+import 'package:flame/position.dart';
+import 'package:flame/sprite.dart';
 import 'package:flutter/animation.dart';
 
-class Box extends PositionComponent with Resizable {
+class Box extends SpriteComponent with Resizable {
+  Box() {
+    this.sprite = Sprite('cube.png', width: 1080, height: 1080);
+  }
   double speedY = 0.0;
-  Rect boxRect;
-  Paint boxPaint = Paint()..color = Color(0xffdf5e88);
 
   void reset() {
     this.x = size.width / 2 - size.width / 9 / 2;
@@ -16,8 +19,11 @@ class Box extends PositionComponent with Resizable {
   }
 
   void render(Canvas c) {
-    boxRect = Rect.fromLTWH(this.x, this.y, size.width / 9, size.width / 9);
-    c.drawRect(boxRect, boxPaint);
+    this.sprite.renderPosition(
+          c,
+          Position(this.x, this.y),
+          size: Position(size.width / 9, size.width / 9),
+        );
   }
 
   void resize(Size size) {
