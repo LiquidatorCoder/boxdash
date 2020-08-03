@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xfff6efa6),
+      color: Colors.white,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -104,8 +104,17 @@ class GameWrapper extends StatelessWidget {
         shaderCallback: (Rect rect) {
           return LinearGradient(
             begin: Alignment.topCenter,
-            end: Alignment.center,
-            colors: [Colors.pink, Colors.yellow],
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.yellow,
+              Colors.yellow,
+              Colors.yellow,
+              Colors.yellow,
+              Colors.yellow,
+              Colors.yellow,
+              Colors.yellow,
+              Colors.white
+            ],
           ).createShader(rect);
         },
         blendMode: BlendMode.saturation,
