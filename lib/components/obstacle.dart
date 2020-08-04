@@ -27,8 +27,7 @@ class Obstacle extends SpriteComponent with Resizable {
     this.destroy();
     this.speedY = -this.speedY;
     this.speedX = 0;
-    Future.delayed(Duration(milliseconds: 50))
-        .then((value) => {this.y = -100000});
+    this.y = -100000;
   }
 
   bool destroy() {

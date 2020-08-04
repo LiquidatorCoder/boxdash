@@ -96,7 +96,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
 
   @override
   void update(double t) {
-    parallaxComponent.update(t);
+    if (parallaxComponent != null) parallaxComponent.update(t);
     fpsRate = (1 / t);
     // spawning obstacles
     if (box != null) box.update(t);
@@ -143,20 +143,10 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
         if (lives != null) if (lives == 0) {
           // game over
           Flame.bgm.stop();
-          this.pauseEngine();
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return Scaffold(
-                  body: Container(
-                    child: Home(score: (counter * obsMultiplier / 10).round()),
-                  ),
-                );
-              },
-            ),
-          );
+          obs.forEach((element) {
+            markToRemove(element);
+          });
+          activeView = 'home';
         }
         // detecting collisions
         if (box.x >= element.x - size.width / 9 &&
@@ -170,15 +160,15 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
           }
         }
       });
-// score counter
-    counter++;
-    if (counter % 1000 == 0) {
+    // score counter
+    if (activeView == 'game') counter++;
+    if (activeView == 'game') if (counter % 1000 == 0) {
       // level up
       obsMultiplier++;
       print("Level $obsMultiplier, speed $speedMultiplier, counter $counter");
       Flame.audio.play('levelup.wav', volume: 0.25);
     }
-    if (counter % 10 == 0) {
+    if (activeView == 'game') if (counter % 10 == 0) {
       // increasing game speed
       speedMultiplier = speedMultiplier + 2;
     }
@@ -195,8 +185,6 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     if (activeView == 'game') score.render(c);
     if (activeView == 'game') level.render(c);
     if (activeView == 'game') livesDisplay.render(c);
-    // fpsTextConfig.render(
-    //     c, '${fpsRate.toStringAsFixed(2)}fps', Position(0, size.height - 24));
   }
 
   @override
@@ -231,24 +219,17 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
 
   void onTapDown(TapDownDetails d) {
     if (!isHandled && start.rect.contains(d.globalPosition)) {
-      final images = [
-        ParallaxImage("bg.png",
-            fill: LayerFill.height, alignment: Alignment.center),
-        ParallaxImage("fg.png",
-            fill: LayerFill.height, alignment: Alignment.center),
-      ];
-      print("tapped");
       if (activeView == 'home') {
-        start.onTapDown();
+        print("tapped");
+        parallaxComponent.baseSpeed = const Offset(0, -10);
+        parallaxComponent.layerDelta = const Offset(0, -2);
         isHandled = true;
-        parallaxComponent = ParallaxComponent(images,
-            baseSpeed: const Offset(0, -10), layerDelta: const Offset(0, -2));
-        add(parallaxComponent);
         add(box = Box());
         obs = List<Obstacle>();
         score = Score(this);
         level = Level(this);
         livesDisplay = Lives(this);
+        start.onTapDown();
       }
     }
   }
