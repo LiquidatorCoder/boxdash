@@ -12,13 +12,6 @@ class StartButton with Resizable {
   Offset position;
 
   StartButton(this.game) {
-    if (size != null)
-      rect = Rect.fromLTWH(
-        game.size.width / 9 * 1.5,
-        (game.size.height * .75) - (game.size.width / 9 * 1.5),
-        game.size.width / 9 * 6,
-        game.size.width / 9 * 3,
-      );
     painter = TextPainter(
       textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
@@ -33,6 +26,7 @@ class StartButton with Resizable {
   }
 
   void render(Canvas c) {
+    // c.drawRect(rect, Paint()..color = Color(0xffffffff));
     painter.layout();
     painter.paint(c, position);
   }
@@ -48,14 +42,14 @@ class StartButton with Resizable {
 
       if (game.size != null) {
         rect = Rect.fromLTWH(
-          game.size.width / 9 * 1.5,
-          (game.size.height * .75) - (game.size.width / 9 * 1.5),
-          game.size.width / 9 * 6,
-          game.size.width / 9 * 3,
+          game.size.width / 2 - (painter.width / 2),
+          (game.size.height * .75) - (painter.height / 2),
+          game.size.width / 9 * 4,
+          game.size.width / 9,
         );
         position = Offset(
           (game.size.width / 2) - (painter.width / 2),
-          (game.size.height * .85) - (painter.height / 2),
+          (game.size.height * .75) - (painter.height / 2),
         );
       } else {
         painter.text = TextSpan(text: "");
