@@ -32,7 +32,6 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   StartButton start;
   Level level;
   Lives livesDisplay;
-  BuildContext context;
   int obsMultiplier = 1;
   int counter = 0;
   double speed = 200;
@@ -44,7 +43,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     color: const Color(0xFF000000),
   );
 
-  BoxGame(Size size, levelNum, context) {
+  BoxGame(Size size, levelNum) {
     final images = [
       ParallaxImage("bg.png",
           fill: LayerFill.height, alignment: Alignment.center),
@@ -67,7 +66,6 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
       obsMultiplier = levelNum;
     }
     counter = 0;
-    this.context = context;
     lives = 3;
     add(Bg());
     add(parallaxComponent);
