@@ -5,6 +5,7 @@ import 'package:boxdash/components/bg.dart';
 import 'package:boxdash/components/box.dart';
 import 'package:boxdash/components/level.dart';
 import 'package:boxdash/components/lives.dart';
+import 'package:boxdash/components/logo.dart';
 import 'package:boxdash/components/obstacle.dart';
 import 'package:boxdash/components/score.dart';
 import 'package:boxdash/components/start.dart';
@@ -31,6 +32,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   Score score;
   StartButton start;
   Level level;
+  Logo logo;
   Lives livesDisplay;
   int obsMultiplier = 1;
   int counter = 0;
@@ -75,7 +77,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     //   Duration(milliseconds: 100),
     //   (_) => spawnParticles(),
     // );
-
+    add(logo = Logo());
     if (activeView == 'home') start = StartButton(this);
     if (activeView == 'game') score = Score(this);
     if (activeView == 'game') level = Level(this);
@@ -228,6 +230,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     speedMultiplier = 1;
     obsMultiplier = 1;
     activeView = 'game';
+    logo.y = 1000000;
   }
 
   void stopGame() {
@@ -244,6 +247,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     parallaxComponent.baseSpeed = const Offset(0, 0);
     parallaxComponent.layerDelta = const Offset(0, 0);
     box.y = -1000000;
+    logo.y = 100;
     isHandled = false;
     activeView = 'home';
   }
