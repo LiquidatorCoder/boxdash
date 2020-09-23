@@ -96,6 +96,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
 
   @override
   void update(double t) {
+    // super.update(t);
     if (parallaxComponent != null) parallaxComponent.update(t);
     fpsRate = (1 / t);
     // spawning obstacles
@@ -142,12 +143,9 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
       obs.forEach((element) {
         if (lives != null) if (lives == 0) {
           // game over
-          Flame.bgm.stop();
-          obs.forEach((element) {
-            markToRemove(element);
-          });
-          activeView = 'home';
+          stopGame();
         }
+
         // detecting collisions
         if (box.x >= element.x - size.width / 9 &&
             box.x <= element.x + size.width * 1 / 3) {
@@ -217,19 +215,45 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     }
   }
 
+  void startGame() {
+    Flame.bgm.play('bgm.mp3');
+    parallaxComponent.baseSpeed = const Offset(0, -10);
+    parallaxComponent.layerDelta = const Offset(0, -2);
+    isHandled = true;
+    add(box = Box());
+    obs = List<Obstacle>();
+    score = Score(this);
+    level = Level(this);
+    livesDisplay = Lives(this);
+    lives = 3;
+    counter = 0;
+    speedMultiplier = 1;
+    obsMultiplier = 1;
+    activeView = 'game';
+  }
+
+  void stopGame() {
+    Flame.bgm.stop();
+    obs.forEach((element) {
+      element.x = -100000;
+      markToRemove(element);
+    });
+    // obs.forEach((element) {
+    //   element.x = -100000;
+    //   markToRemove(element);
+    //   obs.remove(element);
+    // });
+    parallaxComponent.baseSpeed = const Offset(0, 0);
+    parallaxComponent.layerDelta = const Offset(0, 0);
+    box.y = -1000000;
+    isHandled = false;
+    activeView = 'home';
+  }
+
   void onTapDown(TapDownDetails d) {
     if (!isHandled && start.rect.contains(d.globalPosition)) {
       if (activeView == 'home') {
-        print("tapped");
-        parallaxComponent.baseSpeed = const Offset(0, -10);
-        parallaxComponent.layerDelta = const Offset(0, -2);
-        isHandled = true;
-        add(box = Box());
-        obs = List<Obstacle>();
-        score = Score(this);
-        level = Level(this);
-        livesDisplay = Lives(this);
-        start.onTapDown();
+        startGame();
       }
     }
   }

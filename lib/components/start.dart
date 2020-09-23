@@ -56,8 +56,4 @@ class StartButton with Resizable {
       }
     }
   }
-
-  void onTapDown() {
-    game.activeView = 'game';
-  }
 }
