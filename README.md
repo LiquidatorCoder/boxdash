@@ -23,7 +23,7 @@ A Simple Endless Hyper Casual Game made using Flame & Flutter!
 
 ## Demo
 
-| ![](demo/demo.gif) |
+| <img src="demo/demo.gif" alt="icon" width=300> |
 | :-------------: |
 |     Demo Gif     |
 
