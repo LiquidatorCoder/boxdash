@@ -52,7 +52,7 @@ To start your lovely journey with BoxDash, fork the repo to start contributing!
 
 ## License
 
-This app is licensed under the [`BSD 3-Clause License`](https://github.com/LiquidatorCoder/boxdash/tree/master/LICENSE.txt).
+This app is licensed under the [`BSD 3-Clause License`](https://github.com/LiquidatorCoder/boxdash/tree/master/LICENSE).
 Any Usage of the source code must follow the below license.
 
 ```
