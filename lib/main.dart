@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 
 BoxGame game;
 Size size;
+BuildContext ctx;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Util flameUtil = Util();
@@ -25,7 +26,8 @@ void main() async {
   TapGestureRecognizer tapper = TapGestureRecognizer();
   tapper.onTapDown = game.onTapDown;
   Flame.util.addGestureRecognizer(tapper);
-  runApp(GameWrapper(game));
+  runApp(
+      MaterialApp(debugShowCheckedModeBanner: false, home: GameWrapper(game)));
 }
 
 class GameWrapper extends StatelessWidget {
@@ -33,6 +35,7 @@ class GameWrapper extends StatelessWidget {
   GameWrapper(this.game);
   @override
   Widget build(BuildContext context) {
+    ctx = context;
     return game.widget;
   }
 }

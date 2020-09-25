@@ -19,9 +19,11 @@ import 'package:flame/text_config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:boxdash/main.dart' as main;
 
 class BoxGame extends BaseGame with HorizontalDragDetector {
   bool isHandled = false;
+  bool restartPopUp = false;
   String activeView = 'home';
   final r = Random.secure();
   final Random rnd = Random();
@@ -73,10 +75,6 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
     add(parallaxComponent);
     if (activeView == 'game') add(box = Box());
     obs = List<Obstacle>();
-    // Timer.periodic(
-    //   Duration(milliseconds: 100),
-    //   (_) => spawnParticles(),
-    // );
     add(logo = Logo());
     if (activeView == 'home') start = StartButton(this);
     if (activeView == 'game') score = Score(this);
@@ -96,7 +94,6 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
 
   @override
   void update(double t) {
-    // super.update(t);
     if (parallaxComponent != null) parallaxComponent.update(t);
     fpsRate = (1 / t);
     // spawning obstacles
@@ -216,6 +213,7 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
   }
 
   void startGame() {
+    restartPopUp = false;
     Flame.bgm.play('bgm.mp3');
     parallaxComponent.baseSpeed = const Offset(0, -10);
     parallaxComponent.layerDelta = const Offset(0, -2);
@@ -239,17 +237,23 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
       element.x = -100000;
       markToRemove(element);
     });
-    // obs.forEach((element) {
-    //   element.x = -100000;
-    //   markToRemove(element);
-    //   obs.remove(element);
-    // });
     parallaxComponent.baseSpeed = const Offset(0, 0);
     parallaxComponent.layerDelta = const Offset(0, 0);
     box.y = -1000000;
     logo.y = 100;
     isHandled = false;
     activeView = 'home';
+    if (restartPopUp == false) {
+      Navigator.push(
+          main.ctx,
+          MaterialPageRoute(
+              builder: (context) => GameOverDialog(
+                    score: (game.counter * game.obsMultiplier / 10)
+                        .round()
+                        .toString(),
+                  )));
+      restartPopUp = true;
+    }
   }
 
   void onTapDown(TapDownDetails d) {
@@ -258,5 +262,70 @@ class BoxGame extends BaseGame with HorizontalDragDetector {
         startGame();
       }
     }
+  }
+}
+
+class GameOverDialog extends StatelessWidget {
+  final String score;
+  GameOverDialog({this.score});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20), color: Colors.white),
+          width: 200,
+          height: 150,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 0, 4),
+                    child: Text(
+                      'Game Over! Score - $score',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FlatButton(
+                    shape: StadiumBorder(),
+                    color: Color(0xFFE57697),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'RESTART',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

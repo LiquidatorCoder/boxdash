@@ -26,7 +26,6 @@ class StartButton with Resizable {
   }
 
   void render(Canvas c) {
-    // c.drawRect(rect, Paint()..color = Color(0xffffffff));
     painter.layout();
     painter.paint(c, position);
   }
