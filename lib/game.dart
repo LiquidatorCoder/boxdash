@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:boxdash/components/animatedParticles.dart';
 import 'package:boxdash/components/bg.dart';
 import 'package:boxdash/components/box.dart';
+import 'package:boxdash/components/gameOverDialog.dart';
 import 'package:boxdash/components/level.dart';
 import 'package:boxdash/components/lives.dart';
 import 'package:boxdash/components/logo.dart';
